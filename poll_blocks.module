@@ -15,7 +15,7 @@ function poll_blocks_block($op = 'list', $delta = 0) {
 			if ($op == 'list') {
 				
 				foreach ($polls as $key => $pollnode) {
-					$blocks[$key]['info'] = t('Poll block for !poll', array('!poll' => $pollnode->title));
+					$blocks[$key]['info'] = t('Poll Block: !poll', array('!poll' => $pollnode->title));
 					$deltas[$key] = $pollnode->nid;
 				}
 				
@@ -65,8 +65,6 @@ function poll_blocks_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
       break;
   }
 }
-
-
 
 /**
  * Get an array of poll objects for use in hook_block().
