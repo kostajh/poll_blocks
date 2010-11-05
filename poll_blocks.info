@@ -1,0 +1,6 @@
+; $Id$
+name = Poll Blocks
+description = "Generates blocks for each Poll"
+core = 6.x
+version = 1.x-dev
+dependencies[] = poll

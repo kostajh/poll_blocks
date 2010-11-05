@@ -1,0 +1,84 @@
+<?php
+// $Id$
+
+/**
+ * Implementation of hook_block().
+ *
+ * Generates a block containing the latest poll.
+ */
+function poll_blocks_block($op = 'list', $delta = 0) {
+	
+	if ($polls = poll_blocks_get_polls()) {
+
+		if (user_access('access content')) {
+			
+			if ($op == 'list') {
+				
+				foreach ($polls as $key => $pollnode) {
+					$blocks[$key]['info'] = t('Poll block for !poll', array('!poll' => $pollnode->title));
+					$deltas[$key] = $pollnode->nid;
+				}
+				
+				variable_set('poll_blocks', $deltas, array());
+				
+				return $blocks;
+				
+			} else if ($op == 'view') {
+				
+				$deltas = variable_get('poll_blocks', array());
+				
+				if ($deltas) {
+					
+					foreach($deltas as $key => $nid) {
+						if ($key == $delta) {
+							$poll = node_load($nid);
+							if ($poll) {
+								$poll = poll_view($poll, TRUE, FALSE, TRUE);
+								$block['subject'] = t('!title', array('!title' => $poll->title));
+								$block['content'] = drupal_render($poll->content);
+								return $block;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function poll_blocks_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+	
+  switch ($op) {
+    case 'delete':
+      if ($node->type == 'poll') {
+			
+				if ($polls = variable_get('poll_blocks', array())) {
+					drupal_set_message('<pre>' . print_r($polls, true) . '</pre>');
+					$poll_nodes = array_flip($polls);
+					unset($poll_nodes[$node->nid]);
+				}
+				
+			}
+      break;
+  }
+}
+
+
+
+/**
+ * Get an array of poll objects for use in hook_block().
+ *
+ * @return array of Poll node objects.
+ */
+function poll_blocks_get_polls() {
+	$sql = db_query(db_rewrite_sql("SELECT n.nid FROM {node} n INNER JOIN {poll} p ON p.nid = n.nid WHERE n.status = 1 and p.active = 1"));
+	$polls = array();
+	while ($data = db_fetch_object($sql)) {
+		$polls[] = node_load($data->nid);
+	}
+	
+	return $polls;
+}
