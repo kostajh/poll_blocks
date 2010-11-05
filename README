@@ -1,0 +1,12 @@
+
+ README
+ poll_blocks
+ 
+ Created by Kosta Harlan on 2010-11-05.
+
+Overview
+--------
+
+Poll Blocks is a simple module to generate Blocks for each Poll created on a Drupal site. To use this module, copy the module to sites/all/modules and enable it on admin/build/modules.
+
+Navigate to admin/build/blocks and you will see blocks have been created for each Poll on your site.

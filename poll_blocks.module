@@ -32,7 +32,7 @@ function poll_blocks_block($op = 'list', $delta = 0) {
 					foreach($deltas as $key => $nid) {
 						if ($key == $delta) {
 							$poll = node_load($nid);
-							if ($poll) {
+							if ($poll && $poll->status == 1) {
 								$poll = poll_view($poll, TRUE, FALSE, TRUE);
 								$block['subject'] = t('!title', array('!title' => $poll->title));
 								$block['content'] = drupal_render($poll->content);
