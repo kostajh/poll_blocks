@@ -56,7 +56,6 @@ function poll_blocks_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
       if ($node->type == 'poll') {
 			
 				if ($polls = variable_get('poll_blocks', array())) {
-					drupal_set_message('<pre>' . print_r($polls, true) . '</pre>');
 					$poll_nodes = array_flip($polls);
 					unset($poll_nodes[$node->nid]);
 				}
