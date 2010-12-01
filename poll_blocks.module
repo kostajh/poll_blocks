@@ -65,7 +65,6 @@ function poll_blocks_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
  * @return array of Poll node objects.
  */
 function poll_blocks_get_polls() {
-	drupal_set_message(t('we are querying the db'));
 	$sql = db_query(db_rewrite_sql("SELECT n.nid FROM {node} n INNER JOIN {poll} p ON p.nid = n.nid WHERE n.status = 1"));
 	$polls = array();
 
